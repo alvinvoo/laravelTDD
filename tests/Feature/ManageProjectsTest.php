@@ -6,33 +6,20 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ProjectsTest extends TestCase
+class ManageProjectsTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
     
     /** @test */
-    public function guest_cannot_create_project() {
-        // $this->withoutExceptionHandling();
-
-        $attributes = factory('App\Project')->raw();
-
-        $this->post('/projects',$attributes)->assertRedirect('login');
-    }
-
-    /** @test */
-    public function guest_cannot_view_projects() {
-        // $this->withoutExceptionHandling();
-
-        $this->get('/projects')->assertRedirect('login');
-    }
-
-    /** @test */
-    public function guest_cannot_view_project() {
+    public function guest_cannot_manage_project() {
         // $this->withoutExceptionHandling();
 
         $project = factory('App\Project')->create();
 
+        $this->get('/projects')->assertRedirect('login');
+        $this->get('/projects/create')->assertRedirect('login');
         $this->get($project->path())->assertRedirect('login');
+        $this->post('/projects',$project->toArray())->assertRedirect('login');
     }
 
     /** @test */
@@ -47,6 +34,10 @@ class ProjectsTest extends TestCase
             'description' => $this->faker->paragraph
         ];
 
+        // just check that the create page route is available
+        $this->get('/projects/create')->assertStatus(200); 
+
+        // when the create page saves and post to /projects
         $this->post('/projects', $attributes)->assertRedirect('/projects');
 
         $this->assertDatabaseHas('projects', $attributes);
