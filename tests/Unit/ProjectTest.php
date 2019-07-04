@@ -31,7 +31,7 @@ class ProjectTest extends TestCase
     public function a_project_can_add_a_task() {
         $project = factory('App\Project')->create();
 
-        $task = $project->addTask('Test task 1');
+        $task = $project->addTask(['body' => 'test task 1']);
 
         $this->assertCount(1, $project->tasks);
         $this->assertTrue($project->tasks->contains($task));

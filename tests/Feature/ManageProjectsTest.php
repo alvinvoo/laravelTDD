@@ -40,7 +40,7 @@ class ManageProjectsTest extends TestCase
         $this->get('/projects/create')->assertStatus(200); 
 
         // when the create page saves and post to /projects
-        $this->post('/projects', $attributes)->assertRedirect('/projects');
+        $this->post('/projects', $attributes)->assertRedirect('/projects/' . auth()->user()->projects->last()->id);
 
         $this->assertDatabaseHas('projects', $attributes);
 

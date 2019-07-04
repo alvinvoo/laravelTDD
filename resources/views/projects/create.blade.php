@@ -22,7 +22,7 @@
 
     <div class="field">
       <div class="control">
-        <button type="submit" class="btn btn-blue">Create Project</button>
+        <button type="submit" class="button">Create Project</button>
         <a href="/projects">Cancel</a>
       </div>
     </div>
