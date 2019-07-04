@@ -27,7 +27,9 @@ class ManageProjectsTest extends TestCase
 
         $this->withoutExceptionHandling();
 
-        $this->actingAs(factory('App\User')->create());//sign in user
+        // $this->actingAs(factory('App\User')->create());//sign in user
+        // helper method defined at TestCase
+        $this->signIn();
 
         $attributes = [
             'title' => $this->faker->sentence,   // some convenient dummy data from faker trait
@@ -50,8 +52,7 @@ class ManageProjectsTest extends TestCase
 
         $this->withoutExceptionHandling();
 
-        $user = factory('App\User')->create();
-        $this->actingAs($user);
+        $this->signIn();
         
         $project = factory('App\Project')->create(['owner_id' => auth()->id()]);
 
@@ -75,7 +76,7 @@ class ManageProjectsTest extends TestCase
 
     /** @test */
     public function a_project_requires_a_title() {
-        $this->actingAs(factory('App\User')->create());//sign in user
+        $this->signIn();//sign in user
 
         // making it more specific
         $attributes = factory('App\Project')->raw(['title'=>'']);
@@ -85,7 +86,7 @@ class ManageProjectsTest extends TestCase
 
     /** @test */
     public function a_project_requires_a_description() {
-        $this->actingAs(factory('App\User')->create());
+        $this->signIn();
 
         $attributes = factory('App\Project')->raw(['description'=>'']);
 

@@ -16,11 +16,9 @@
         <div class="mb-8">
           <h2 class="text-lg text-grey mb-3">Tasks</h2>
           {{-- tasks --}}
-          <div class="card mb-3">Lorem Ipsum nopendum</div>
-          <div class="card mb-3">Lorem Ipsum nopendum</div>
-          <div class="card mb-3">Lorem Ipsum nopendum</div>
-          <div class="card mb-3">Lorem Ipsum nopendum</div>
-          <div class="card">Lorem Ipsum nopendum</div>
+          @foreach ($project->tasks as $task)
+            <div class="card mb-3">{{ $task->body }}</div>
+          @endforeach
         </div>
         
         <div>
