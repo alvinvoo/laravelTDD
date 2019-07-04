@@ -3,7 +3,9 @@ module.exports = {
     extend: {
       colors: {
         grey: 'rgba(0,0,0,0.4)',
-        'grey-light': '#F5F6F9'
+        'grey-light': '#F5F6F9',
+        'bb-blue': '#47cdff',
+        'bb-blue-light': '#8ae2fe'
       }
     },
     boxShadow: {
