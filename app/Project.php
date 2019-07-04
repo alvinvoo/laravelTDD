@@ -22,6 +22,6 @@ class Project extends Model
     }
 
     public function addTask($body){
-        return $this->tasks()->create($body);
+        return $this->tasks()->create(compact('body'));
     }
 }
