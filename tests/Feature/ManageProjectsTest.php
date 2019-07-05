@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Project;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -33,18 +34,62 @@ class ManageProjectsTest extends TestCase
 
         $attributes = [
             'title' => $this->faker->sentence,   // some convenient dummy data from faker trait
-            'description' => $this->faker->paragraph
+            'description' => $this->faker->sentence,
+            'notes' => 'general notes'
         ];
 
         // just check that the create page route is available
         $this->get('/projects/create')->assertStatus(200); 
 
         // when the create page saves and post to /projects
-        $this->post('/projects', $attributes)->assertRedirect('/projects/' . auth()->user()->projects->last()->id);
+        $response = $this->post('/projects', $attributes);
+        
+        $project = Project::where($attributes)->first();
+        
+        $response->assertRedirect($project->path());
 
         $this->assertDatabaseHas('projects', $attributes);
 
-        $this->get('/projects')->assertSee($attributes['title']);
+        $this->get($project->path())
+            ->assertSee($attributes['title'])
+            ->assertSee($attributes['description'])
+            ->assertSee($attributes['notes']);
+    }
+
+    /** @test */
+    public function a_user_can_update_a_project() {
+
+        $this->withoutExceptionHandling();
+
+        $this->signIn();
+        
+        $project = factory('App\Project')->create(['owner_id' => auth()->id()]);
+
+        $this->patch($project->path(), [
+            'notes' => 'Changed'
+        ])
+        ->assertRedirect($project->path());
+
+        $this->assertDatabaseHas('projects', [
+            'notes' => 'Changed'
+        ]);
+
+        $this->get($project->path())->assertSee('Changed');
+    }
+
+    /** @test */
+    public function a_user_cannot_update_others_project() {
+
+        // $this->withoutExceptionHandling();
+        
+        $users = factory('App\User',2)->create();
+        $this->actingAs($users[0]);
+
+        $project = factory('App\Project')->create(['owner_id' => $users[1]]);
+
+        $this->patch($project->path(), [
+            'notes' => 'Changed'
+        ])->assertStatus(403);
     }
 
     /** @test */
