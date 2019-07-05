@@ -6,7 +6,7 @@
       <h2 class="text-grey text-sm">
         <a href="/projects">My Projects</a> / {{ $project->title }}
       </h2>
-      <a href="/projects/create" class="button">New Project</a>
+      <a href="{{ $project->path() }}/edit" class="button">Edit Project</a>
     </div>
   </header>
 
@@ -57,4 +57,6 @@
       </div>
     </div>
   </main>
+
+  @include ('errors')
 @endsection
