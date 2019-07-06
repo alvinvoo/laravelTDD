@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\UpdateProjectRequest;
 use App\Project;
 
 class ProjectsController extends Controller
@@ -49,18 +50,30 @@ class ProjectsController extends Controller
         return view('projects.edit', compact('project'));
     }
 
-    public function update(Project $project) {
+    // public function update(Project $project) {
 
-        //controller helper method
-        $this->authorize('update', $project);
+    //     //controller helper method
+    //     $this->authorize('update', $project);
 
-        // validate
-        $attributes = $this->validateRequest();
+    //     // validate
+    //     $attributes = $this->validateRequest();
                 
-        $project->update($attributes);
+    //     $project->update($attributes);
 
-        // redirect
-        return redirect($project->path());
+    //     // redirect
+    //     return redirect($project->path());
+    // }
+
+    public function update(UpdateProjectRequest $request) {
+        // iter 1. basic form request
+        // $project->update($request->validated());
+
+        // iter 2. let the form request class handle the persistance
+        // $request->update();
+
+        // return redirect($project->path());
+        // iter 3. remove Project injection and chain everything with request object
+        return redirect($request->update()->path())        ;
     }
 
     private function validateRequest(){
