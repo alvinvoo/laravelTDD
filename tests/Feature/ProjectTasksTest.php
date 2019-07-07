@@ -65,8 +65,6 @@ class ProjectTasksTest extends TestCase
     /** @test */
     public function a_task_can_be_updated(){
 
-        // $this->withoutExceptionHandling();
-
         // the app(..) helper method create a new instance
         $project = //app(ProjectFactorySetup::class)
         // ->ownedBy($this->signIn())

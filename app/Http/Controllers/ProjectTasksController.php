@@ -31,10 +31,18 @@ class ProjectTasksController extends Controller
 
         request()->validate(['body'=>'required']);
 
-        $task->update([
-            'body' => request('body'),
-            'completed' => request()->has('completed')
-        ]);
+        $task->update(request(['body']));
+
+        // $task->update([
+        //     'body' => request('body'),
+        //     'completed' => request()->has('completed') && request('completed') 
+        //     // here as long as you have this key, it is marked as completed
+        //     // ADDED one more condition to check for FLASEY value (just in case)
+        // ]);
+
+        if(request()->has('completed') && request('completed')){
+            $task->complete();
+        }
 
         return redirect($project->path());
     }

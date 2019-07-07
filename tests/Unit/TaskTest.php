@@ -20,11 +20,25 @@ class TaskTest extends TestCase
     /** @test */
     public function task_can_return_own_path(){
 
-        $this->withoutExceptionHandling();
+        // $this->withoutExceptionHandling();
 
         // $project = factory('App\Project')->create();
         // $task = $project->addTask(factory('App\Task')->raw()['body']);
         $task = factory('App\Task')->create();
         $this->assertEquals('/projects/' . $task->project->id . '/tasks/' . $task->id, $task->path());
+    }
+
+    /** @test */
+    public function task_can_be_completed(){
+        $this->withoutExceptionHandling();
+
+        $task = factory('App\Task')->create();
+
+        $this->assertFalse($task->completed);
+
+        $task->complete();
+
+        $this->assertTrue($task->fresh()->completed); // get a fresh model copy from db
+        
     }
 }
