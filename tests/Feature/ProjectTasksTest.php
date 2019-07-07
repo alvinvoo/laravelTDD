@@ -82,6 +82,34 @@ class ProjectTasksTest extends TestCase
 
         $this->actingAs($project->owner)
             ->patch($project->tasks[0]->path(), [
+            'body' => 'task changed'
+        ]);
+
+        $this->assertDatabaseHas('tasks', [
+            'body' => 'task changed'
+        ]);
+    }
+
+    /** @test */
+    public function a_task_can_be_completed(){
+
+        // the app(..) helper method create a new instance
+        $project = //app(ProjectFactorySetup::class)
+        // ->ownedBy($this->signIn())
+            // instead we could use real-time facade
+            ProjectFactorySetup::withTasks(1)
+            ->create();
+
+        // $this->signIn();
+
+        // $project = auth()->user()->projects()->create(
+        //     factory('App\Project')->raw()
+        // );
+
+        // $task = $project->addTask('test task');
+
+        $this->actingAs($project->owner)
+            ->patch($project->tasks[0]->path(), [
             'body' => 'task changed',
             'completed' => true
         ]);
@@ -89,6 +117,42 @@ class ProjectTasksTest extends TestCase
         $this->assertDatabaseHas('tasks', [
             'body' => 'task changed',
             'completed' => true
+        ]);
+    }
+
+    /** @test */
+    public function a_task_can_be_marked_as_incomplete(){
+
+        $this->withoutExceptionHandling();
+        // the app(..) helper method create a new instance
+        $project = //app(ProjectFactorySetup::class)
+        // ->ownedBy($this->signIn())
+            // instead we could use real-time facade
+            ProjectFactorySetup::withTasks(1)
+            ->create();
+
+        // $this->signIn();
+
+        // $project = auth()->user()->projects()->create(
+        //     factory('App\Project')->raw()
+        // );
+
+        // $task = $project->addTask('test task');
+
+        $this->actingAs($project->owner)
+            ->patch($project->tasks[0]->path(), [
+            'body' => 'task changed',
+            'completed' => true
+        ]);
+
+        $this->patch($project->tasks[0]->path(), [
+            'body' => 'task changed',
+            'completed' => false
+        ]);
+
+        $this->assertDatabaseHas('tasks', [
+            'body' => 'task changed',
+            'completed' => false
         ]);
     }
 

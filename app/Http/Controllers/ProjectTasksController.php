@@ -39,10 +39,20 @@ class ProjectTasksController extends Controller
         //     // here as long as you have this key, it is marked as completed
         //     // ADDED one more condition to check for FLASEY value (just in case)
         // ]);
+            
+        // if(request('completed')){
+        //     $task->complete();
+        // } else {
+        //     $task->incomplete();
+        // }
 
-        if(request()->has('completed') && request('completed')){
-            $task->complete();
-        }
+        // $method = request('completed') ? 'complete' : 'incomplete';
+        // // this works
+        // // $task->$method();
+        // // this works too
+        // $task->{$method}();
+
+        request('completed') ? $task->complete() : $task->incomplete();
 
         return redirect($project->path());
     }

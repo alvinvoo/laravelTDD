@@ -17,22 +17,22 @@ class Task extends Model
         'completed' => 'boolean' // autocast TINYINT field from DB to boolean in app
     ];
 
-    protected static function boot(){
-        parent::boot();
+    // protected static function boot(){
+    //     parent::boot();
 
-        static::created(function ($task){ // manually registering created hook
-            $task->project->recordActivity('created_task');
-        });
+    //     static::created(function ($task){ // manually registering created hook
+    //         $task->project->recordActivity('created_task');
+    //     });
 
-        static::updated(function ($task){ // manually registering created hook
-            if (!$task->completed) {
-                // $task->project->recordActivity('uncompleted_task');    
-                return;
-            };
+    //     // static::updated(function ($task){ // manually registering created hook
+    //     //     if (!$task->completed) {
+    //     //         $task->project->recordActivity('uncompleted_task');    
+    //     //         return;
+    //     //     };
 
-            $task->project->recordActivity('completed_task');
-        });
-    }
+    //     //     $task->project->recordActivity('completed_task');
+    //     // });
+    // }
 
     public function project(){
         return $this->belongsTo(Project::class);
@@ -43,6 +43,14 @@ class Task extends Model
     }
 
     public function complete(){
-        return $this->update(['completed' => true]);
+        $this->update(['completed' => true]);
+
+        $this->project->recordActivity('completed_task');
+    }
+
+    public function incomplete(){
+        $this->update(['completed' => false]);
+
+        $this->project->recordActivity('incompleted_task');
     }
 }
