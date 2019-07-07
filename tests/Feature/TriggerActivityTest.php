@@ -43,11 +43,34 @@ class TriggerActivityTest extends TestCase
         $project->addTask('some tasks');
 
         $this->assertCount(2, $project->activity);
-        $this->assertEquals('created_task', $project->activity->last()->description); 
+
+        tap($project->activity->last(), function($activity){
+            $this->assertEquals('created_task', $activity->description);
+            $this->assertInstanceOf('App\Task', $activity->subject);
+            $this->assertEquals('some tasks', $activity->subject->body);
+        });
     }
 
     /** @test */
     public function completing_a_task(){
+        $project = ProjectFactorySetup::withTasks(1)->create();
+
+        $this->actingAs($project->owner)
+            ->patch($project->tasks[0]->path(), [
+                'body' => 'foobar',
+                'completed' => true 
+            ]);
+
+        $this->assertCount(3, $project->activity);     
+        
+        tap($project->activity->last(), function($activity){
+            $this->assertEquals('completed_task', $activity->description); 
+            $this->assertInstanceOf('App\Task', $activity->subject);
+        });
+    }
+    
+    /** @test */
+    public function incompleting_a_task(){
         $project = ProjectFactorySetup::withTasks(1)->create();
 
         $this->actingAs($project->owner)
@@ -66,8 +89,11 @@ class TriggerActivityTest extends TestCase
         $project = $project->fresh();
 
         $this->assertCount(4, $project->activity);
-
-        $this->assertEquals('incompleted_task', $project->activity->last()->description); 
+        
+        tap($project->activity->last(), function($activity){
+            $this->assertEquals('incompleted_task', $activity->description); 
+            $this->assertInstanceOf('App\Task', $activity->subject);
+        });
     }
 
     /** @test */
