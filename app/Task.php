@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
+    use RecordsActivity;
     //
     // protected $guarded = [];
     // same as above
@@ -16,6 +17,8 @@ class Task extends Model
     protected $casts = [
         'completed' => 'boolean' // autocast TINYINT field from DB to boolean in app
     ];
+
+    static protected $recordableEvents = ['created', 'deleted'];
 
     // protected static function boot(){
     //     parent::boot();
@@ -52,16 +55,5 @@ class Task extends Model
         $this->update(['completed' => false]);
 
         $this->recordActivity('incompleted_task');
-    }
-
-    public function activity(){
-        return $this->morphMany(Activity::class, 'subject')->latest();
-    }
-
-    public function recordActivity($description){
-        $this->activity()->create([
-            'project_id' => $this->project->id,
-            'description'=> $description
-        ]);
     }
 }

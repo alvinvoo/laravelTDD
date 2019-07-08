@@ -29,7 +29,7 @@ class ManageProjectsTest extends TestCase
     /** @test */
     public function an_auth_user_can_create_a_project(){
 
-        // $this->withoutExceptionHandling();
+        $this->withoutExceptionHandling();
 
         // $this->actingAs(factory('App\User')->create());//sign in user
         // helper method defined at TestCase
