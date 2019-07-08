@@ -25,4 +25,15 @@ class Project extends Model
     public function addTask($body){
         return $this->tasks()->create(compact('body'));
     }
+
+    public function invite(User $user){
+        // attach here 'attached' the pivot data to the target user
+        return $this->members()->attach($user);
+    }
+
+    public function members(){
+        // a project can have many members
+        // a member can have many projects
+        return $this->belongsToMany(User::class, 'project_members');
+    }
 }
