@@ -73,7 +73,15 @@ class ProjectsController extends Controller
 
         // return redirect($project->path());
         // iter 3. remove Project injection and chain everything with request object
-        return redirect($request->update()->path())        ;
+        return redirect($request->update()->path());
+    }
+
+    public function destroy(Project $project) {
+        $this->authorize('update', $project);
+        
+        $project->delete();
+
+        return redirect('/projects');
     }
 
     private function validateRequest(){

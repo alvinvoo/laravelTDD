@@ -24,6 +24,7 @@ class ManageProjectsTest extends TestCase
         $this->get($project->path())->assertRedirect('login');
         $this->get($project->path().'/edit')->assertRedirect('login');
         $this->post('/projects',$project->toArray())->assertRedirect('login');
+        $this->delete($project->path())->assertRedirect('login');
     }
 
     /** @test */
@@ -60,7 +61,7 @@ class ManageProjectsTest extends TestCase
     /** @test */
     public function a_user_can_update_a_project() {
 
-        $this->withoutExceptionHandling();
+        // $this->withoutExceptionHandling();
 
         // $this->signIn();
         
@@ -88,6 +89,32 @@ class ManageProjectsTest extends TestCase
             ->assertSee('a description changed')
             ->assertSee('a notes changed');
     }
+
+    /** @test */
+    public function a_user_can_delete_a_project(){
+        // $this->withoutExceptionHandling();
+
+        $project = ProjectFactorySetup::create();
+
+        $this->actingAs($project->owner)
+            ->delete($project->path())
+            ->assertRedirect('/projects');
+
+        $this->assertDatabaseMissing('projects', $project->only('id'));
+    }
+
+    /** @test */
+    public function a_user_cannot_delete_others_project(){
+        // $this->withoutExceptionHandling();
+
+        $project = ProjectFactorySetup::create();
+
+        $this->signIn();
+
+        $this->delete($project->path())
+            ->assertStatus(403);
+    }
+
 
     /** @test */
     public function a_user_can_update_a_project_notes() {
