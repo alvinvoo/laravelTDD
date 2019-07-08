@@ -62,7 +62,9 @@ trait RecordsActivity
     public function recordActivity($description)
     {
         $this->activity()->create([
-            // 'user_id' => ($this->project ?? $this)->owner->id,
+            // if this has a project attribute -- means this is NOT project instance
+            // if this doesnt have a project attribute -- mean this IS a project instance
+            'user_id' => ($this->project ?? $this)->owner->id,
             'description' => $description,
             'changes' => $this->activityChanges(),
             'project_id' => class_basename($this) === 'Project' ? $this->id : $this->project_id
