@@ -30,7 +30,21 @@ class Project extends Model
     }
 
     public function recordActivity($description){
-        $this->activity()->create(compact('description'));
+
+        $this->activity()->create([
+            'description' => $description,
+            'changes' => $this->activityChanges($description)
+        ]);
+    }
+
+    private function activityChanges($description) {
+        if ($description === 'updated') {
+            return [
+                // need to get the whole array attributes to minus off
+                'before'  => array_except(array_diff($this->original, $this->toArray()),'updated_at'), 
+                'after' => array_except($this->changes, 'updated_at')
+            ];
+        };
     }
 
 }

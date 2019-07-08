@@ -9,6 +9,10 @@ class Activity extends Model
     //
     static protected $unguarded = true;
 
+    protected $casts = [
+        'changes' => 'array'
+    ];
+
     public function subject(){
         return $this->morphTo();
     }
