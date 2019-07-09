@@ -168,6 +168,20 @@ class ManageProjectsTest extends TestCase
     }
 
     /** @test */
+    public function a_user_can_see_all_projects_they_are_member_of(){
+        $this->withoutExceptionHandling();
+
+        $user = $this->signIn();
+
+        // and user has been invited on a project
+        $project = tap(ProjectFactorySetup::create())->invite($user);
+
+        // user would see project when visit dashboard
+        $this->get('/projects')
+            ->assertSee($project->title);
+    }
+
+    /** @test */
     public function a_user_cannot_view_others_project(){
 
         // $this->withoutExceptionHandling();

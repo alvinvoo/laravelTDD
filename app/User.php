@@ -41,4 +41,20 @@ class User extends Authenticatable
         return $this->hasMany(Project::class,'owner_id')->orderByDesc('updated_at'); 
         // select * from projects where owner_id = .. <this class's id>
     }
+
+    public function accessibleProjects(){
+        // $projectCreated = $this->projects;
+
+        // $ids = \DB::table('project_members')->where('user_id', $this->id)->pluck('project_id');
+
+        // $projectsSharedWith = Project::find($ids);
+
+        // return $projectCreated->merge($projectsSharedWith); // collection merge
+
+        return Project::where('owner_id', $this->id)
+            ->orWhereHas('members', function($query){
+                $query->where('user_id', $this->id);
+            })
+            ->get();
+    }
 }

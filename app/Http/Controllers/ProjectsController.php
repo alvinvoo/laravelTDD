@@ -10,7 +10,8 @@ class ProjectsController extends Controller
 {
     //
     public function index() {
-        $projects = auth()->user()->projects;
+        // get all projects user is owner and member of
+        $projects = auth()->user()->accessibleProjects();
 
         return view('projects.index',compact('projects'));
     }
