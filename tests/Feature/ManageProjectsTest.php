@@ -35,27 +35,30 @@ class ManageProjectsTest extends TestCase
         // $this->actingAs(factory('App\User')->create());//sign in user
         // helper method defined at TestCase
         $this->signIn();
-
-        $attributes = [
-            'title' => $this->faker->sentence,   // some convenient dummy data from faker trait
-            'description' => $this->faker->sentence,
-            'notes' => 'general notes'
-        ];
-
-        // just check that the create page route is available
+        
         $this->get('/projects/create')->assertStatus(200); 
 
-        // when the create page saves and post to /projects
-        $response = $this->post('/projects', $attributes);
-        
-        $project = Project::where($attributes)->first();
-        
-        $response->assertRedirect($project->path());
+        $attributes = factory(Project::class)->raw();
 
-        $this->get($project->path())
+        // just check that the create page route is available
+
+        // when the create page saves and post to /projects
+        // $response = $this->post('/projects', $attributes);
+        
+        // $project = Project::where($attributes)->first();
+        
+        // $response->assertRedirect($project->path());
+
+        // $this->get($project->path())
+        //     ->assertSee($attributes['title'])
+        //     ->assertSee($attributes['description'])
+        //     ->assertSee($attributes['notes']);
+
+        $this->followingRedirects()->post('/projects', $attributes)
             ->assertSee($attributes['title'])
             ->assertSee($attributes['description'])
             ->assertSee($attributes['notes']);
+    
     }
 
     /** @test */
@@ -112,6 +115,18 @@ class ManageProjectsTest extends TestCase
         $this->signIn();
 
         $this->delete($project->path())
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    public function a_member_cannot_delete_project_not_owned(){
+        $project = ProjectFactorySetup::create();
+        
+        $user = $this->signIn();
+
+        $project->invite($user);
+
+        $this->actingAs($user)->delete($project->path())
             ->assertStatus(403);
     }
 
