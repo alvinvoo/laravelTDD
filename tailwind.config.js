@@ -6,6 +6,11 @@ module.exports = {
         'grey-light': '#F5F6F9',
         'bb-blue': '#47cdff',
         'bb-blue-light': '#8ae2fe'
+      },
+      backgroundColor: {
+        page: 'var(--page-background-color)',
+        header: 'var(--header-background-color)',
+        card: 'var(--card-background-color)'
       }
     },
     boxShadow: {

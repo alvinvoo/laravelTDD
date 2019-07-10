@@ -667,7 +667,7 @@ video {
 }
 
 .card {
-  background-color: #fff;
+  background-color: var(--card-background-color);
   padding: 1.25rem;
   border-radius: 0.5rem;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.08);
@@ -1079,6 +1079,18 @@ video {
   background-color: #8ae2fe;
 }
 
+.bg-page {
+  background-color: var(--page-background-color);
+}
+
+.bg-header {
+  background-color: var(--header-background-color);
+}
+
+.bg-card {
+  background-color: var(--card-background-color);
+}
+
 .hover\:bg-transparent:hover {
   background-color: transparent;
 }
@@ -1467,6 +1479,18 @@ video {
   background-color: #8ae2fe;
 }
 
+.hover\:bg-page:hover {
+  background-color: var(--page-background-color);
+}
+
+.hover\:bg-header:hover {
+  background-color: var(--header-background-color);
+}
+
+.hover\:bg-card:hover {
+  background-color: var(--card-background-color);
+}
+
 .focus\:bg-transparent:focus {
   background-color: transparent;
 }
@@ -1853,6 +1877,18 @@ video {
 
 .focus\:bg-bb-blue-light:focus {
   background-color: #8ae2fe;
+}
+
+.focus\:bg-page:focus {
+  background-color: var(--page-background-color);
+}
+
+.focus\:bg-header:focus {
+  background-color: var(--header-background-color);
+}
+
+.focus\:bg-card:focus {
+  background-color: var(--card-background-color);
 }
 
 .bg-bottom {
@@ -7697,6 +7733,18 @@ video {
   z-index: auto;
 }
 
+.theme-light {
+  --page-background-color: #F5F6F9;
+  --header-background-color: white;
+  --card-background-color: white;
+}
+
+.theme-dark {
+  --page-background-color: #17181E;
+  --header-background-color: #1F2027;
+  --card-background-color: #1F2027;
+}
+
 @media (min-width: 640px) {
   .sm\:appearance-none {
     -webkit-appearance: none;
@@ -8104,6 +8152,18 @@ video {
     background-color: #8ae2fe;
   }
 
+  .sm\:bg-page {
+    background-color: var(--page-background-color);
+  }
+
+  .sm\:bg-header {
+    background-color: var(--header-background-color);
+  }
+
+  .sm\:bg-card {
+    background-color: var(--card-background-color);
+  }
+
   .sm\:hover\:bg-transparent:hover {
     background-color: transparent;
   }
@@ -8492,6 +8552,18 @@ video {
     background-color: #8ae2fe;
   }
 
+  .sm\:hover\:bg-page:hover {
+    background-color: var(--page-background-color);
+  }
+
+  .sm\:hover\:bg-header:hover {
+    background-color: var(--header-background-color);
+  }
+
+  .sm\:hover\:bg-card:hover {
+    background-color: var(--card-background-color);
+  }
+
   .sm\:focus\:bg-transparent:focus {
     background-color: transparent;
   }
@@ -8878,6 +8950,18 @@ video {
 
   .sm\:focus\:bg-bb-blue-light:focus {
     background-color: #8ae2fe;
+  }
+
+  .sm\:focus\:bg-page:focus {
+    background-color: var(--page-background-color);
+  }
+
+  .sm\:focus\:bg-header:focus {
+    background-color: var(--header-background-color);
+  }
+
+  .sm\:focus\:bg-card:focus {
+    background-color: var(--card-background-color);
   }
 
   .sm\:bg-bottom {
@@ -15130,6 +15214,18 @@ video {
     background-color: #8ae2fe;
   }
 
+  .md\:bg-page {
+    background-color: var(--page-background-color);
+  }
+
+  .md\:bg-header {
+    background-color: var(--header-background-color);
+  }
+
+  .md\:bg-card {
+    background-color: var(--card-background-color);
+  }
+
   .md\:hover\:bg-transparent:hover {
     background-color: transparent;
   }
@@ -15518,6 +15614,18 @@ video {
     background-color: #8ae2fe;
   }
 
+  .md\:hover\:bg-page:hover {
+    background-color: var(--page-background-color);
+  }
+
+  .md\:hover\:bg-header:hover {
+    background-color: var(--header-background-color);
+  }
+
+  .md\:hover\:bg-card:hover {
+    background-color: var(--card-background-color);
+  }
+
   .md\:focus\:bg-transparent:focus {
     background-color: transparent;
   }
@@ -15904,6 +16012,18 @@ video {
 
   .md\:focus\:bg-bb-blue-light:focus {
     background-color: #8ae2fe;
+  }
+
+  .md\:focus\:bg-page:focus {
+    background-color: var(--page-background-color);
+  }
+
+  .md\:focus\:bg-header:focus {
+    background-color: var(--header-background-color);
+  }
+
+  .md\:focus\:bg-card:focus {
+    background-color: var(--card-background-color);
   }
 
   .md\:bg-bottom {
@@ -22156,6 +22276,18 @@ video {
     background-color: #8ae2fe;
   }
 
+  .lg\:bg-page {
+    background-color: var(--page-background-color);
+  }
+
+  .lg\:bg-header {
+    background-color: var(--header-background-color);
+  }
+
+  .lg\:bg-card {
+    background-color: var(--card-background-color);
+  }
+
   .lg\:hover\:bg-transparent:hover {
     background-color: transparent;
   }
@@ -22544,6 +22676,18 @@ video {
     background-color: #8ae2fe;
   }
 
+  .lg\:hover\:bg-page:hover {
+    background-color: var(--page-background-color);
+  }
+
+  .lg\:hover\:bg-header:hover {
+    background-color: var(--header-background-color);
+  }
+
+  .lg\:hover\:bg-card:hover {
+    background-color: var(--card-background-color);
+  }
+
   .lg\:focus\:bg-transparent:focus {
     background-color: transparent;
   }
@@ -22930,6 +23074,18 @@ video {
 
   .lg\:focus\:bg-bb-blue-light:focus {
     background-color: #8ae2fe;
+  }
+
+  .lg\:focus\:bg-page:focus {
+    background-color: var(--page-background-color);
+  }
+
+  .lg\:focus\:bg-header:focus {
+    background-color: var(--header-background-color);
+  }
+
+  .lg\:focus\:bg-card:focus {
+    background-color: var(--card-background-color);
   }
 
   .lg\:bg-bottom {
@@ -29182,6 +29338,18 @@ video {
     background-color: #8ae2fe;
   }
 
+  .xl\:bg-page {
+    background-color: var(--page-background-color);
+  }
+
+  .xl\:bg-header {
+    background-color: var(--header-background-color);
+  }
+
+  .xl\:bg-card {
+    background-color: var(--card-background-color);
+  }
+
   .xl\:hover\:bg-transparent:hover {
     background-color: transparent;
   }
@@ -29570,6 +29738,18 @@ video {
     background-color: #8ae2fe;
   }
 
+  .xl\:hover\:bg-page:hover {
+    background-color: var(--page-background-color);
+  }
+
+  .xl\:hover\:bg-header:hover {
+    background-color: var(--header-background-color);
+  }
+
+  .xl\:hover\:bg-card:hover {
+    background-color: var(--card-background-color);
+  }
+
   .xl\:focus\:bg-transparent:focus {
     background-color: transparent;
   }
@@ -29956,6 +30136,18 @@ video {
 
   .xl\:focus\:bg-bb-blue-light:focus {
     background-color: #8ae2fe;
+  }
+
+  .xl\:focus\:bg-page:focus {
+    background-color: var(--page-background-color);
+  }
+
+  .xl\:focus\:bg-header:focus {
+    background-color: var(--header-background-color);
+  }
+
+  .xl\:focus\:bg-card:focus {
+    background-color: var(--card-background-color);
   }
 
   .xl\:bg-bottom {
