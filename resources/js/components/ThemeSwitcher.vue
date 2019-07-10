@@ -27,7 +27,7 @@
             }
         },
         watch: {
-            selectedTheme() {
+            selectedTheme() { // watch any chances on 'selectedTheme' state
                 document.body.className = document.body.className.replace(/theme-\w+/,this.selectedTheme);
 
                 localStorage.setItem('theme', this.selectedTheme);

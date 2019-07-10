@@ -1901,7 +1901,45 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      form: {
+        title: '',
+        description: '',
+        tasks: [{
+          value: ''
+        }]
+      },
+      errors: []
+    };
+  },
+  methods: {
+    addTask: function addTask() {
+      this.form.tasks.push({
+        value: ''
+      });
+    },
+    submit: function submit() {
+      var _this = this;
+
+      axios.post('/projects', this.form).then(function (response) {
+        location = response.data.message;
+      })["catch"](function (error) {
+        _this.errors = error.response.data.errors;
+      });
+    }
+  }
+});
 
 /***/ }),
 
@@ -1943,6 +1981,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     selectedTheme: function selectedTheme() {
+      // watch any chances on 'selectedTheme' state
       document.body.className = document.body.className.replace(/theme-\w+/, this.selectedTheme);
       localStorage.setItem('theme', this.selectedTheme);
     }
@@ -37289,11 +37328,36 @@ var render = function() {
                 ),
                 _vm._v(" "),
                 _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.title,
+                      expression: "form.title"
+                    }
+                  ],
                   staticClass: "border p-2 text-xs block w-full rounded",
-                  attrs: { type: "text", id: "title" }
+                  class: _vm.errors.title
+                    ? "border-red-800"
+                    : "border-gray-200",
+                  attrs: { type: "text", id: "title" },
+                  domProps: { value: _vm.form.title },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "title", $event.target.value)
+                    }
+                  }
                 }),
                 _vm._v(" "),
-                _c("span", { staticClass: "text-xs italic text-error" })
+                _vm.errors.title
+                  ? _c("span", {
+                      staticClass: "text-xs italic text-red-800",
+                      domProps: { textContent: _vm._s(_vm.errors.title[0]) }
+                    })
+                  : _vm._e()
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "mb-4" }, [
@@ -37307,33 +37371,86 @@ var render = function() {
                 ),
                 _vm._v(" "),
                 _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.description,
+                      expression: "form.description"
+                    }
+                  ],
                   staticClass:
                     "border border-muted-light p-2 text-xs block w-full rounded",
-                  attrs: { id: "description", rows: "7" }
+                  class: _vm.errors.description
+                    ? "border-red-800"
+                    : "border-gray-200",
+                  attrs: { id: "description", rows: "7" },
+                  domProps: { value: _vm.form.description },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "description", $event.target.value)
+                    }
+                  }
                 }),
                 _vm._v(" "),
-                _c("span", { staticClass: "text-xs italic text-error" })
+                _vm.errors.description
+                  ? _c("span", {
+                      staticClass: "text-xs italic text-red-800",
+                      domProps: {
+                        textContent: _vm._s(_vm.errors.description[0])
+                      }
+                    })
+                  : _vm._e()
               ])
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "flex-1 ml-4" }, [
-              _c("div", { staticClass: "mb-4" }, [
-                _c("label", { staticClass: "text-sm block mb-2" }, [
-                  _vm._v("Need Some Tasks?")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass:
-                    "border border-muted-light mb-2 p-2 text-xs block w-full rounded",
-                  attrs: { type: "text", placeholder: "Task 1" }
-                })
-              ]),
+              _c(
+                "div",
+                { staticClass: "mb-4" },
+                [
+                  _c("label", { staticClass: "text-sm block mb-2" }, [
+                    _vm._v("Need Some Tasks?")
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.form.tasks, function(task, index) {
+                    return _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: task.value,
+                          expression: "task.value"
+                        }
+                      ],
+                      key: index,
+                      staticClass:
+                        "border border-muted-light mb-2 p-2 text-xs block w-full rounded",
+                      attrs: { type: "text", placeholder: "Task 1" },
+                      domProps: { value: task.value },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(task, "value", $event.target.value)
+                        }
+                      }
+                    })
+                  })
+                ],
+                2
+              ),
               _vm._v(" "),
               _c(
                 "button",
                 {
                   staticClass: "inline-flex items-center text-xs",
-                  attrs: { type: "button" }
+                  attrs: { type: "button" },
+                  on: { click: _vm.addTask }
                 },
                 [
                   _c(
@@ -37390,7 +37507,12 @@ var render = function() {
               "button",
               {
                 staticClass: "button is-outlined mr-4",
-                attrs: { type: "button" }
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.$modal.hide("new-project")
+                  }
+                }
               },
               [_vm._v("Cancel")]
             ),

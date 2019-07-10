@@ -12,9 +12,11 @@
                             type="text"
                             id="title"
                             class="border p-2 text-xs block w-full rounded"
+                            :class="errors.title ? 'border-red-800' : 'border-gray-200'" 
+                            v-model="form.title"
                             >
 
-                        <span class="text-xs italic text-error"></span>
+                        <span class="text-xs italic text-red-800" v-if="errors.title" v-text="errors.title[0]"></span>
                     </div>
 
                     <div class="mb-4">
@@ -23,10 +25,14 @@
                         <textarea
                             id="description"
                             class="border border-muted-light p-2 text-xs block w-full rounded"
+                            :class="errors.description ? 'border-red-800' : 'border-gray-200'"
                             rows="7"
-                            ></textarea>
+                            v-model="form.description"
+                            ></textarea>        
 
-                        <span class="text-xs italic text-error"></span>
+                        <span class="text-xs italic text-red-800"
+                        v-if="errors.description" v-text="errors.description[0]"
+                        ></span>
                     </div>
                 </div>
 
@@ -37,10 +43,13 @@
                             type="text"
                             class="border border-muted-light mb-2 p-2 text-xs block w-full rounded"
                             placeholder="Task 1"
+                            v-for="(task, index) of form.tasks"
+                            :key="index"
+                            v-model="task.value"
                             >
                     </div>
 
-                    <button type="button" class="inline-flex items-center text-xs">
+                    <button type="button" class="inline-flex items-center text-xs" @click="addTask">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" class="mr-2">
                             <g fill="none" fill-rule="evenodd" opacity=".307">
                                 <path stroke="#000" stroke-opacity=".012" stroke-width="0" d="M-3-3h24v24H-3z"></path>
@@ -49,12 +58,12 @@
                         </svg>
 
                         <span>Add New Task Field</span>
-                    </button>
+                    </button>         
                 </div>
             </div>
 
             <footer class="flex justify-end">
-                <button type="button" class="button is-outlined mr-4">Cancel</button>
+                <button type="button" class="button is-outlined mr-4" @click="$modal.hide('new-project')">Cancel</button>
                 <button class="button">Create Project</button>
             </footer>
         </form>
@@ -62,9 +71,34 @@
 </template>
 
 <script>
-export default {
-  
-
-}
+    export default {
+        data() {
+            return {
+                form: {
+                    title: '',
+                    description: '',
+                    tasks: [
+                        {value: ''},
+                    ]   
+                },
+                
+                errors: []
+            }   
+        },
+        methods: {
+            addTask() {
+                this.form.tasks.push({ value: ''});
+            },
+            submit() {
+                axios.post('/projects',this.form)
+                    .then(response => {
+                        location = response.data.message;
+                    })
+                    .catch(error => {
+                        this.errors = error.response.data.errors;
+                    });
+            }
+        }
+    }
 </script>
 
