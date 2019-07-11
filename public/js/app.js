@@ -1917,7 +1917,7 @@ __webpack_require__.r(__webpack_exports__);
         title: '',
         description: '',
         tasks: [{
-          value: ''
+          body: ''
         }]
       },
       errors: []
@@ -1926,7 +1926,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     addTask: function addTask() {
       this.form.tasks.push({
-        value: ''
+        body: ''
       });
     },
     submit: function submit() {
@@ -1968,6 +1968,7 @@ __webpack_require__.r(__webpack_exports__);
     console.log('Component mounted.');
   },
   created: function created() {
+    console.log('Component created');
     this.selectedTheme = localStorage.getItem('theme') || 'theme-light';
   },
   data: function data() {
@@ -37422,21 +37423,21 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: task.value,
-                          expression: "task.value"
+                          value: task.body,
+                          expression: "task.body"
                         }
                       ],
                       key: index,
                       staticClass:
                         "border border-muted-light mb-2 p-2 text-xs block w-full rounded",
                       attrs: { type: "text", placeholder: "Task 1" },
-                      domProps: { value: task.value },
+                      domProps: { value: task.body },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.$set(task, "value", $event.target.value)
+                          _vm.$set(task, "body", $event.target.value)
                         }
                       }
                     })

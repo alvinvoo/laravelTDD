@@ -15,6 +15,7 @@
             console.log('Component mounted.')
         },
         created(){
+            console.log('Component created');
             this.selectedTheme = localStorage.getItem('theme') || 'theme-light';
         },
         data() {

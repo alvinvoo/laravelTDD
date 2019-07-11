@@ -45,7 +45,7 @@
                             placeholder="Task 1"
                             v-for="(task, index) of form.tasks"
                             :key="index"
-                            v-model="task.value"
+                            v-model="task.body"
                             >
                     </div>
 
@@ -78,16 +78,15 @@
                     title: '',
                     description: '',
                     tasks: [
-                        {value: ''},
+                        {body: ''},
                     ]   
                 },
-                
-                errors: []
+                errors: [ ]
             }   
         },
         methods: {
             addTask() {
-                this.form.tasks.push({ value: ''});
+                this.form.tasks.push({ body: ''});
             },
             submit() {
                 axios.post('/projects',this.form)
