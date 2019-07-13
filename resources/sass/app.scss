@@ -20,6 +20,8 @@
   @apply bg-card p-5 rounded-lg shadow;
 }
 
+@import 'components/dropdown';
+
 @import "~tailwindcss/utilities";
 
 // use :root to place global scope
