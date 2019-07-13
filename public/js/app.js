@@ -1838,6 +1838,7 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _BirdboardForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BirdboardForm */ "./resources/js/components/BirdboardForm.js");
 //
 //
 //
@@ -1910,17 +1911,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      form: {
+      form: new _BirdboardForm__WEBPACK_IMPORTED_MODULE_0__["default"]({
         title: '',
         description: '',
         tasks: [{
           body: ''
         }]
-      },
-      errors: []
+      })
     };
   },
   methods: {
@@ -1930,12 +1931,12 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     submit: function submit() {
-      var _this = this;
+      if (!this.form.tasks[0].body) {
+        delete this.form.originalData.tasks;
+      }
 
-      axios.post('/projects', this.form).then(function (response) {
+      this.form.submit('/projects').then(function (response) {
         location = response.data.message;
-      })["catch"](function (error) {
-        _this.errors = error.response.data.errors;
       });
     }
   }
@@ -37338,7 +37339,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "border p-2 text-xs block w-full rounded",
-                  class: _vm.errors.title
+                  class: _vm.form.errors.title
                     ? "border-red-800"
                     : "border-gray-200",
                   attrs: { type: "text", id: "title" },
@@ -37353,10 +37354,12 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm.errors.title
+                _vm.form.errors.title
                   ? _c("span", {
                       staticClass: "text-xs italic text-red-800",
-                      domProps: { textContent: _vm._s(_vm.errors.title[0]) }
+                      domProps: {
+                        textContent: _vm._s(_vm.form.errors.title[0])
+                      }
                     })
                   : _vm._e()
               ]),
@@ -37382,7 +37385,7 @@ var render = function() {
                   ],
                   staticClass:
                     "border border-muted-light p-2 text-xs block w-full rounded",
-                  class: _vm.errors.description
+                  class: _vm.form.errors.description
                     ? "border-red-800"
                     : "border-gray-200",
                   attrs: { id: "description", rows: "7" },
@@ -37397,11 +37400,11 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm.errors.description
+                _vm.form.errors.description
                   ? _c("span", {
                       staticClass: "text-xs italic text-red-800",
                       domProps: {
-                        textContent: _vm._s(_vm.errors.description[0])
+                        textContent: _vm._s(_vm.form.errors.description[0])
                       }
                     })
                   : _vm._e()
@@ -49812,6 +49815,101 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/components/BirdboardForm.js":
+/*!**************************************************!*\
+  !*** ./resources/js/components/BirdboardForm.js ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+ // using an OO form like this means we can easily extend the functionality of the form
+// and of course generalized it to be used everywhere
+
+var BirdBoardForm =
+/*#__PURE__*/
+function () {
+  function BirdBoardForm(data) {
+    _classCallCheck(this, BirdBoardForm);
+
+    // get the empty data structure
+    // I only want to pass this relevant data during submission
+    // assigning like this will still maintain the reference by tasks array
+    // this.orginalData = data;
+    // to get rid of the reference - i.e. get rid of the _reactivity_ observer as well
+    this.originalData = JSON.parse(JSON.stringify(data)); // assign the data to THIS object
+    // so that the all data is available as this.title, this.tasks..
+    // the _reactivity_ observer is also assigned
+
+    Object.assign(this, data); // good to have this here, but I don't want it to be passed during form submission via _this_
+
+    this.errors = {};
+  }
+
+  _createClass(BirdBoardForm, [{
+    key: "data",
+    value: function data() {
+      var retData = {};
+
+      for (var attribute in this.originalData) {
+        // only assign the relevant attributes
+        retData[attribute] = this[attribute];
+      }
+
+      return retData;
+    }
+  }, {
+    key: "patch",
+    value: function patch(endpoint) {
+      this.submit(endpoint, 'patch');
+    }
+  }, {
+    key: "delete",
+    value: function _delete(endpoint) {
+      this.submit(endpoint, 'delete');
+    }
+  }, {
+    key: "submit",
+    value: function submit(endpoint) {
+      var requestType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'post';
+      return axios__WEBPACK_IMPORTED_MODULE_0___default.a[requestType](endpoint, this.data())["catch"](this.onFail.bind(this)).then(this.onSuccess.bind(this));
+    }
+  }, {
+    key: "onSuccess",
+    value: function onSuccess(response) {
+      // do something 
+      this.errors = {};
+      return response;
+    }
+  }, {
+    key: "onFail",
+    value: function onFail(error) {
+      this.errors = error.response.data.errors;
+      throw error; // throw error again in case we need to handle it outside
+    }
+  }, {
+    key: "reset",
+    value: function reset() {
+      Object.assign(this, this.originalData);
+    }
+  }]);
+
+  return BirdBoardForm;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (BirdBoardForm);
 
 /***/ }),
 
